@@ -4,6 +4,25 @@ A starter template for both Client & Power projects.
 
 Before starting to work with this template, please take some time to read through the documentation.
 
+## 🎥 Lite-YouTube Integration
+
+This project includes a fully integrated lite-youtube web component for fast, performant YouTube embeds in Webflow.
+
+**Quick Links:**
+
+- [📖 Full Webflow Integration Guide](./docs/LITE-YOUTUBE-WEBFLOW-GUIDE.md)
+- [⚡ Quick Reference Card](./docs/QUICK-REFERENCE.md)
+- [🎨 Live Examples](./docs/lite-youtube-example.html)
+
+**Quick Start:**
+
+```html
+<!-- Add to Webflow Embed Element -->
+<lite-youtube videoid="YOUR_VIDEO_ID"></lite-youtube>
+```
+
+The lite-youtube component loads ~224x faster than standard YouTube embeds, improving Core Web Vitals and page performance.
+
 ## Reference
 
 - [Included tools](#included-tools)

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lite-YouTube Examples</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+
+    h2 {
+      color: #34495e;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .example {
+      margin-bottom: 3rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border-left: 4px solid #3498db;
+    }
+
+    .example h3 {
+      color: #2980b9;
+      margin-bottom: 0.5rem;
+    }
+
+    .example p {
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    .video-wrapper {
+      max-width: 800px;
+      margin: 1rem 0;
+    }
+
+    code {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .note strong {
+      color: #856404;
+    }
+
+    /* Custom lite-youtube styling */
+    lite-youtube {
+      --lite-youtube-aspect-ratio: 16 / 9;
+    }
+
+    lite-youtube.custom-ratio {
+      --lite-youtube-aspect-ratio: 4 / 3;
+    }
+
+    lite-youtube.no-shadow {
+      --lite-youtube-frame-shadow-visible: no;
+    }
+
+    /* Fallback link styling */
+    .lite-youtube-fallback {
+      aspect-ratio: 16 / 9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 1em;
+      padding: 1em;
+      background-color: #000;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .lite-youtube-fallback::before {
+      display: block;
+      content: '';
+      border: solid transparent;
+      border-width: 2em 0 2em 3em;
+      border-left-color: red;
+    }
+
+    .lite-youtube-fallback:hover {
+      background-color: #1a1a1a;
+    }
+
+    .lite-youtube-fallback:hover::before {
+      border-left-color: #fff;
+    }
+
+    .lite-youtube-fallback:focus {
+      outline: 2px solid red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎥 Lite-YouTube Web Component Examples</h1>
+    
+    <div class="note">
+      <strong>Note:</strong> This page demonstrates various ways to use the lite-youtube web component. 
+      All examples use real YouTube videos to show actual functionality.
+    </div>
+
+    <!-- Example 1: Basic Usage -->
+    <div class="example">
+      <h3>1. Basic Video Embed</h3>
+      <p>The simplest way to embed a YouTube video. Just provide the video ID.</p>
+      <pre><code>&lt;lite-youtube videoid="guJLfqTFfIw"&gt;&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube videoid="guJLfqTFfIw"></lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 2: With Title -->
+    <div class="example">
+      <h3>2. Video with Custom Title (Accessibility)</h3>
+      <p>Adding a title improves accessibility and SEO.</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="dQw4w9WgXcQ" 
+  videotitle="Rick Astley - Never Gonna Give You Up"&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          videoid="dQw4w9WgXcQ" 
+          videotitle="Rick Astley - Never Gonna Give You Up">
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 3: With Fallback -->
+    <div class="example">
+      <h3>3. Video with Fallback Link (Recommended)</h3>
+      <p>Provides a fallback for users without JavaScript and improves SEO.</p>
+      <pre><code>&lt;lite-youtube videoid="jNQXAC9IVRw" videotitle="Me at the zoo"&gt;
+  &lt;a class="lite-youtube-fallback" 
+     href="https://www.youtube.com/watch?v=jNQXAC9IVRw"&gt;
+    Watch on YouTube: "Me at the zoo"
+  &lt;/a&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube videoid="jNQXAC9IVRw" videotitle="Me at the zoo">
+          <a class="lite-youtube-fallback" href="https://www.youtube.com/watch?v=jNQXAC9IVRw">
+            Watch on YouTube: "Me at the zoo"
+          </a>
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 4: Auto-load -->
+    <div class="example">
+      <h3>4. Auto-load When Scrolled Into View</h3>
+      <p>The video loads automatically when it becomes visible in the viewport.</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="9bZkp7q19f0" 
+  videotitle="PSY - GANGNAM STYLE"
+  autoload&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          videoid="9bZkp7q19f0" 
+          videotitle="PSY - GANGNAM STYLE"
+          autoload>
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 5: Start at specific time -->
+    <div class="example">
+      <h3>5. Start Video at Specific Time</h3>
+      <p>Start the video at 30 seconds.</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="kJQP7kiw5Fk" 
+  videotitle="Luis Fonsi - Despacito"
+  videoStartAt="30"&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          videoid="kJQP7kiw5Fk" 
+          videotitle="Luis Fonsi - Despacito"
+          videoStartAt="30">
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 6: Privacy Mode -->
+    <div class="example">
+      <h3>6. Privacy-Enhanced Mode (No Cookies)</h3>
+      <p>Uses youtube-nocookie.com for better privacy.</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="OPf0YbXqDm0" 
+  videotitle="Mark Ronson - Uptown Funk"
+  nocookie&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          videoid="OPf0YbXqDm0" 
+          videotitle="Mark Ronson - Uptown Funk"
+          nocookie>
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 7: Custom Poster Quality -->
+    <div class="example">
+      <h3>7. High-Quality Poster Image</h3>
+      <p>Use maximum resolution thumbnail (if available).</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="YQHsXMglC9A" 
+  videotitle="Adele - Hello"
+  posterquality="maxresdefault"&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          videoid="YQHsXMglC9A" 
+          videotitle="Adele - Hello"
+          posterquality="maxresdefault">
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 8: Custom Parameters -->
+    <div class="example">
+      <h3>8. Custom YouTube Parameters</h3>
+      <p>Disable controls and related videos.</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="RgKAFK5djSk" 
+  videotitle="Wiz Khalifa - See You Again"
+  params="controls=0&rel=0"&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          videoid="RgKAFK5djSk" 
+          videotitle="Wiz Khalifa - See You Again"
+          params="controls=0&rel=0">
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 9: Custom Styling -->
+    <div class="example">
+      <h3>9. Custom Aspect Ratio (4:3)</h3>
+      <p>Override the default 16:9 aspect ratio using CSS custom properties.</p>
+      <pre><code>&lt;lite-youtube 
+  class="custom-ratio"
+  videoid="2Vv-BfVoq4g" 
+  videotitle="Ed Sheeran - Perfect"&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          class="custom-ratio"
+          videoid="2Vv-BfVoq4g" 
+          videotitle="Ed Sheeran - Perfect">
+        </lite-youtube>
+      </div>
+    </div>
+
+    <!-- Example 10: No Shadow -->
+    <div class="example">
+      <h3>10. Flat Look (No Shadow Overlay)</h3>
+      <p>Disable the gradient shadow overlay for a cleaner look.</p>
+      <pre><code>&lt;lite-youtube 
+  class="no-shadow"
+  videoid="CevxZvSJLk8" 
+  videotitle="Katy Perry - Roar"&gt;
+&lt;/lite-youtube&gt;</code></pre>
+      <div class="video-wrapper">
+        <lite-youtube 
+          class="no-shadow"
+          videoid="CevxZvSJLk8" 
+          videotitle="Katy Perry - Roar">
+        </lite-youtube>
+      </div>
+    </div>
+
+    <h2>📊 Performance Benefits</h2>
+    <div class="note">
+      <p><strong>Performance Comparison:</strong></p>
+      <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+        <li>Standard YouTube embed: ~500KB initial load</li>
+        <li>Lite-YouTube embed: ~2-3KB initial load</li>
+        <li><strong>Result: ~224x faster initial load!</strong></li>
+      </ul>
+    </div>
+
+    <h2>🎯 Best Practices for Webflow</h2>
+    <div class="example">
+      <h3>Recommended Setup</h3>
+      <p>For the best user experience and SEO, use this pattern:</p>
+      <pre><code>&lt;lite-youtube 
+  videoid="YOUR_VIDEO_ID" 
+  videotitle="Descriptive Video Title"
+  autoload
+  nocookie&gt;
+  &lt;a class="lite-youtube-fallback" 
+     href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID"&gt;
+    Watch on YouTube: "Descriptive Video Title"
+  &lt;/a&gt;
+&lt;/lite-youtube&gt;</code></pre>
+    </div>
+  </div>
+
+  <!-- Load the lite-youtube component -->
+  <script defer src="../dist/index.js"></script>
+
+  <!-- Event listener example -->
+  <script>
+    document.addEventListener('liteYoutubeIframeLoaded', (event) => {
+      console.log('✅ Video loaded:', event.detail.videoId);
+    });
+  </script>
+</body>
+</html>
+
