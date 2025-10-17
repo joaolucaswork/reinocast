@@ -23,6 +23,37 @@ This project includes a fully integrated lite-youtube web component for fast, pe
 
 The lite-youtube component loads ~224x faster than standard YouTube embeds, improving Core Web Vitals and page performance.
 
+## 🎠 Swiper Carousel Integration
+
+This project includes a fully integrated Swiper.js carousel module optimized for video content and Webflow.
+
+**Quick Links:**
+
+- [📖 Full Swiper Integration Guide](./docs/SWIPER-WEBFLOW-GUIDE.md)
+- [⚡ Swiper Quick Reference](./docs/SWIPER-QUICK-REFERENCE.md)
+- [🎨 Live Carousel Examples](./docs/swiper-example.html)
+
+**Quick Start:**
+
+```html
+<!-- Webflow Structure -->
+<div class="swiper is-podcast">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">
+      <lite-youtube videoid="VIDEO_ID_1"></lite-youtube>
+    </div>
+    <div class="swiper-slide">
+      <lite-youtube videoid="VIDEO_ID_2"></lite-youtube>
+    </div>
+  </div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-pagination"></div>
+</div>
+```
+
+Features: Touch/drag support, keyboard navigation, auto-pause videos, responsive design, and full accessibility.
+
 ## Reference
 
 - [Included tools](#included-tools)

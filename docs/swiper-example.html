@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swiper Carousel Examples</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+
+    h2 {
+      color: #34495e;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .example {
+      margin-bottom: 3rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border-left: 4px solid #3498db;
+    }
+
+    .example h3 {
+      color: #2980b9;
+      margin-bottom: 0.5rem;
+    }
+
+    .example p {
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    code {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    .note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .note strong {
+      color: #856404;
+    }
+
+    /* Swiper Styles */
+    .swiper {
+      width: 100%;
+      height: auto;
+      position: relative;
+      margin: 2rem 0;
+    }
+
+    .swiper-wrapper {
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      transition-property: transform;
+      box-sizing: content-box;
+    }
+
+    .swiper-slide {
+      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition-property: transform;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+      position: absolute;
+      top: 50%;
+      width: 44px;
+      height: 44px;
+      margin-top: -22px;
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .swiper-button-prev:after,
+    .swiper-button-next:after {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .swiper-button-prev {
+      left: 10px;
+    }
+
+    .swiper-button-next {
+      right: 10px;
+    }
+
+    .swiper-button-prev:after {
+      content: '‹';
+    }
+
+    .swiper-button-next:after {
+      content: '›';
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      text-align: center;
+      transition: 300ms opacity;
+      transform: translate3d(0, 0, 0);
+      z-index: 10;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+    }
+
+    .swiper-pagination-bullet {
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+      border-radius: 50%;
+      background: #000;
+      opacity: 0.2;
+      margin: 0 4px;
+      cursor: pointer;
+      transition: opacity 0.3s, background 0.3s;
+    }
+
+    .swiper-pagination-bullet:hover {
+      opacity: 0.5;
+    }
+
+    .swiper-pagination-bullet-active {
+      opacity: 1;
+      background: #007aff;
+    }
+
+    .swiper-slide lite-youtube {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .swiper.is-podcast {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 50px;
+    }
+
+    .swiper.is-podcast .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+      .swiper.is-podcast {
+        padding: 0 20px;
+      }
+      
+      .swiper-button-prev,
+      .swiper-button-next {
+        width: 36px;
+        height: 36px;
+        margin-top: -18px;
+      }
+    }
+
+    /* Slide content styling */
+    .slide-content {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 8px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-content h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .slide-content p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .controls {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      padding: 0.75rem 1.5rem;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    .controls button:hover {
+      background: #2980b9;
+    }
+
+    .controls button:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎠 Swiper Carousel Examples</h1>
+    
+    <div class="note">
+      <strong>Note:</strong> This page demonstrates the Swiper carousel integration with lite-youtube video embeds. 
+      Use arrow keys to navigate between slides!
+    </div>
+
+    <!-- Example 1: Video Carousel -->
+    <div class="example">
+      <h3>1. Video Carousel (Podcast Style)</h3>
+      <p>A carousel optimized for video content with automatic video pausing when changing slides.</p>
+      
+      <div class="swiper is-podcast">
+        <div class="swiper-wrapper">
+          
+          <div class="swiper-slide">
+            <lite-youtube 
+              videoid="guJLfqTFfIw" 
+              videotitle="Episode 1: DevTools to Video"
+              nocookie>
+            </lite-youtube>
+          </div>
+          
+          <div class="swiper-slide">
+            <lite-youtube 
+              videoid="dQw4w9WgXcQ" 
+              videotitle="Episode 2: Never Gonna Give You Up"
+              nocookie>
+            </lite-youtube>
+          </div>
+          
+          <div class="swiper-slide">
+            <lite-youtube 
+              videoid="jNQXAC9IVRw" 
+              videotitle="Episode 3: Me at the zoo"
+              nocookie>
+            </lite-youtube>
+          </div>
+          
+          <div class="swiper-slide">
+            <lite-youtube 
+              videoid="9bZkp7q19f0" 
+              videotitle="Episode 4: Gangnam Style"
+              nocookie>
+            </lite-youtube>
+          </div>
+          
+          <div class="swiper-slide">
+            <lite-youtube 
+              videoid="kJQP7kiw5Fk" 
+              videotitle="Episode 5: Despacito"
+              nocookie>
+            </lite-youtube>
+          </div>
+          
+        </div>
+        
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="controls">
+        <button onclick="controlCarousel('podcast', 'prev')">← Previous</button>
+        <button onclick="controlCarousel('podcast', 'next')">Next →</button>
+        <button onclick="controlCarousel('podcast', 'goto', 0)">Go to First</button>
+        <button onclick="controlCarousel('podcast', 'goto', 4)">Go to Last</button>
+      </div>
+    </div>
+
+    <h2>📊 Features</h2>
+    <div class="example">
+      <h3>Built-in Features</h3>
+      <ul style="margin-left: 2rem; line-height: 2;">
+        <li>✅ <strong>Touch/Drag Support</strong> - Swipe on mobile, drag on desktop</li>
+        <li>✅ <strong>Keyboard Navigation</strong> - Use arrow keys to navigate</li>
+        <li>✅ <strong>Auto-Pause Videos</strong> - Videos pause when changing slides</li>
+        <li>✅ <strong>Responsive Design</strong> - Adapts to all screen sizes</li>
+        <li>✅ <strong>Accessibility</strong> - ARIA labels and screen reader support</li>
+        <li>✅ <strong>Performance</strong> - Preloads adjacent slides for smooth transitions</li>
+        <li>✅ <strong>Pagination</strong> - Visual indicators for current slide</li>
+        <li>✅ <strong>Navigation Arrows</strong> - Click to navigate between slides</li>
+      </ul>
+    </div>
+
+    <h2>🎯 Best Practices</h2>
+    <div class="example">
+      <h3>For Video Carousels</h3>
+      <ul style="margin-left: 2rem; line-height: 2;">
+        <li>✅ Use <code>nocookie</code> attribute on lite-youtube for privacy</li>
+        <li>✅ Don't use <code>autoload</code> on videos in carousels</li>
+        <li>✅ Keep <code>pauseVideosOnSlideChange: true</code> enabled</li>
+        <li>✅ Limit to 10-15 slides for best performance</li>
+        <li>✅ Use descriptive <code>videotitle</code> attributes</li>
+        <li>✅ Test with keyboard navigation</li>
+        <li>✅ Include navigation buttons for accessibility</li>
+      </ul>
+    </div>
+
+    <h2>⌨️ Keyboard Shortcuts</h2>
+    <div class="example">
+      <h3>Try These Keys</h3>
+      <ul style="margin-left: 2rem; line-height: 2;">
+        <li><strong>→</strong> (Right Arrow) - Next slide</li>
+        <li><strong>←</strong> (Left Arrow) - Previous slide</li>
+        <li><strong>Home</strong> - First slide</li>
+        <li><strong>End</strong> - Last slide</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>💡 Tip:</strong> Click on any video thumbnail to start playing. The video will automatically pause when you navigate to another slide!
+    </div>
+  </div>
+
+  <!-- Load the scripts -->
+  <script defer src="../dist/index.js"></script>
+
+  <!-- Programmatic control example -->
+  <script>
+    // Store carousel instances
+    let carouselInstances = {};
+
+    // Wait for Webflow to initialize
+    window.Webflow = window.Webflow || [];
+    window.Webflow.push(() => {
+      // Store references to carousels for programmatic control
+      setTimeout(() => {
+        const podcastCarousel = document.querySelector('.swiper.is-podcast');
+        if (podcastCarousel && podcastCarousel.swiper) {
+          carouselInstances.podcast = podcastCarousel.swiper;
+        }
+      }, 100);
+    });
+
+    // Control carousel programmatically
+    function controlCarousel(name, action, index) {
+      const carousel = carouselInstances[name];
+      if (!carousel) {
+        console.error('Carousel not found:', name);
+        return;
+      }
+
+      switch (action) {
+        case 'prev':
+          carousel.slidePrev();
+          break;
+        case 'next':
+          carousel.slideNext();
+          break;
+        case 'goto':
+          carousel.slideTo(index);
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
+
