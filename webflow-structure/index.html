@@ -1,28 +1,91 @@
 <body>
   <div class="page-wrapper">
-    <div class="main-wrapper">
+    <div class="main-wrapper reino-cast">
       <section class="reinocast_section">
         <div class="padding-global">
           <div class="container-large">
             <div class="reinocast-main_wrapper">
-              <div class="swiper is-podcast">
-                <div class="swiper-wrapper is-podcast">
-                  <div class="swiper-slide is-podcast">
-                    <lite-youtube
-                      videoid="9fCzmyCgK1o"
-                      videotitle="CLAREZA: o que ninguém te conta sobre investir"
-                      posterquality="maxresdefault"
-                      posterloading="eager"
-                    ></lite-youtube>
+              <div class="slider-principal-youtube">
+                <div class="swiper is-podcast">
+                  <div class="swiper-wrapper is-podcast">
+                    <div class="swiper-slide is-podcast">
+                      <div class="video-principal_wrapper">
+                        <lite-youtube
+                          videoid="9fCzmyCgK1o"
+                          videotitle="CLAREZA: o que ninguém te conta sobre investir"
+                          posterquality="maxresdefault"
+                          posterloading="eager"
+                          class="lite-youtube"
+                        ></lite-youtube>
+                      </div>
+                      <div class="height-bg"></div>
+                      <div class="elements-video-youtube">
+                        <div class="people-podcast">
+                          <div person="Gabriel Tintori" class="people_item first">
+                            <img
+                              src="images/Captura-de-Tela-2025-10-17-às-17.18.10.png"
+                              loading="lazy"
+                              sizes="(max-width: 1254px) 100vw, 1254px"
+                              srcset="
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png  500w,
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png  800w,
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png 1080w,
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png 1254w
+                              "
+                              alt=""
+                            />
+                          </div>
+                          <div person="Carlus Tintori" class="people_item">
+                            <img
+                              src="images/Captura-de-Tela-2025-10-17-às-17.17.50.png"
+                              loading="lazy"
+                              sizes="(max-width: 1292px) 100vw, 1292px"
+                              srcset="
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png  500w,
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png  800w,
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png 1080w,
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png 1292w
+                              "
+                              alt=""
+                            />
+                          </div>
+                          <div person="Gabriel Tintori" class="people_item">
+                            <img
+                              src="images/Captura-de-Tela-2025-10-17-às-17.18.10.png"
+                              loading="lazy"
+                              sizes="(max-width: 1254px) 100vw, 1254px"
+                              srcset="
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png  500w,
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png  800w,
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png 1080w,
+                                images/Captura-de-Tela-2025-10-17-às-17.18.10.png 1254w
+                              "
+                              alt=""
+                            />
+                          </div>
+                          <div person="Carlus Tintori" class="people_item">
+                            <img
+                              src="images/Captura-de-Tela-2025-10-17-às-17.17.50.png"
+                              loading="lazy"
+                              sizes="(max-width: 1292px) 100vw, 1292px"
+                              srcset="
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png  500w,
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png  800w,
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png 1080w,
+                                images/Captura-de-Tela-2025-10-17-às-17.17.50.png 1292w
+                              "
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="swiper-slide is-podcast">
-                    <lite-youtube videoid="guJLfqTFfIw"></lite-youtube>
+                  <div class="navigation-controls">
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                   </div>
-                </div>
-                <div class="swiper-pagination"></div>
-                <div class="navigation-controls">
-                  <div class="swiper-button-prev"></div>
-                  <div class="swiper-button-next"></div>
                 </div>
               </div>
             </div>
@@ -32,6 +95,9 @@
     </div>
     <div class="estilo-global w-embed">
       <style>
+        lite-youtube {
+          --lite-youtube-frame-shadow-visible: no;
+        }
         body {
           font-size: 1.1111111111111112vw;
         }

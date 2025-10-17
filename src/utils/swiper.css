@@ -61,20 +61,37 @@
 
 /* Podcast carousel specific styles */
 .swiper.is-podcast {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 50px;
+  /* Don't force width - let it inherit from parent container */
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  flex: 1; /* Allow it to grow within flex container */
 }
 
 .swiper.is-podcast .swiper-slide {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 /* Ensure only one slide is visible at a time */
 .swiper.is-podcast .swiper-wrapper {
   align-items: center;
+  overflow: visible;
+}
+
+/* Position navigation buttons inside the slide area */
+.swiper.is-podcast .swiper-button-prev {
+  left: 10px;
+  z-index: 10;
+}
+
+.swiper.is-podcast .swiper-button-next {
+  right: 10px;
+  z-index: 10;
 }
 
 /* Swiper initialized state */
@@ -85,7 +102,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .swiper.is-podcast {
-    padding: 0 20px;
+    padding: 0;
   }
 
   .swiper-button-prev,
@@ -93,6 +110,14 @@
     width: 34px;
     height: 34px;
     margin-top: -17px;
+  }
+
+  .swiper.is-podcast .swiper-button-prev {
+    left: 5px;
+  }
+
+  .swiper.is-podcast .swiper-button-next {
+    right: 5px;
   }
 
   .swiper-button-prev svg,
@@ -110,7 +135,7 @@
 
 @media (max-width: 480px) {
   .swiper.is-podcast {
-    padding: 0 10px;
+    padding: 0;
   }
 
   .swiper-button-prev,
@@ -118,6 +143,14 @@
     width: 30px;
     height: 30px;
     margin-top: -15px;
+  }
+
+  .swiper.is-podcast .swiper-button-prev {
+    left: 2px;
+  }
+
+  .swiper.is-podcast .swiper-button-next {
+    right: 2px;
   }
 
   .swiper-button-prev svg,
