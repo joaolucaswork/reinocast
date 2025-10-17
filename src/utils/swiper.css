@@ -61,11 +61,13 @@
 
 /* Podcast carousel specific styles */
 .swiper.is-podcast {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
+  /* Don't force width - let it inherit from parent container */
+  width: auto;
+  max-width: none;
+  margin: 0;
   padding: 0;
   overflow: visible;
+  flex: 1; /* Allow it to grow within flex container */
 }
 
 .swiper.is-podcast .swiper-slide {
@@ -81,13 +83,15 @@
   overflow: visible;
 }
 
-/* Position navigation buttons outside the slide area */
+/* Position navigation buttons inside the slide area */
 .swiper.is-podcast .swiper-button-prev {
   left: 10px;
+  z-index: 10;
 }
 
 .swiper.is-podcast .swiper-button-next {
   right: 10px;
+  z-index: 10;
 }
 
 /* Swiper initialized state */
