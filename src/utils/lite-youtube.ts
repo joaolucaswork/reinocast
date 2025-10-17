@@ -34,6 +34,8 @@ export class LiteYTEmbed extends HTMLElement {
   }
 
   connectedCallback(): void {
+    this.setupComponent();
+
     this.addEventListener('pointerover', () => LiteYTEmbed.warmConnections(this), {
       once: true,
     });
@@ -117,12 +119,12 @@ export class LiteYTEmbed extends HTMLElement {
    * Define our shadowDOM for the component
    */
   private setupDom(): void {
-    const shadowDom = this.attachShadow({ mode: 'open' });
+    this.shadowRoot = this.attachShadow({ mode: 'open' });
     let nonce = '';
     if (window.liteYouTubeNonce) {
       nonce = `nonce="${window.liteYouTubeNonce}"`;
     }
-    shadowDom.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style ${nonce}>
         :host {
           --aspect-ratio: var(--lite-youtube-aspect-ratio, 16 / 9);
@@ -218,13 +220,13 @@ export class LiteYTEmbed extends HTMLElement {
         <button id="playButton" part="playButton"></button>
       </div>
     `;
-    this.domRefFrame = shadowDom.querySelector<HTMLDivElement>('#frame')!;
+    this.domRefFrame = this.shadowRoot.querySelector<HTMLDivElement>('#frame')!;
     this.domRefImg = {
-      fallback: shadowDom.querySelector('#fallbackPlaceholder')!,
-      webp: shadowDom.querySelector('#webpPlaceholder')!,
-      jpeg: shadowDom.querySelector('#jpegPlaceholder')!,
+      fallback: this.shadowRoot.querySelector('#fallbackPlaceholder')!,
+      webp: this.shadowRoot.querySelector('#webpPlaceholder')!,
+      jpeg: this.shadowRoot.querySelector('#jpegPlaceholder')!,
     };
-    this.domRefPlayButton = shadowDom.querySelector('#playButton')!;
+    this.domRefPlayButton = this.shadowRoot.querySelector('#playButton')!;
   }
 
   /**

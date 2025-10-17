@@ -7,7 +7,10 @@ const BUILD_DIRECTORY = 'dist';
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 // Config entrypoint files
-const ENTRY_POINTS = ['src/index.ts'];
+const ENTRY_POINTS = [
+  'src/index.ts',
+  'src/styles.css', // CSS separado para usar com <link> no Webflow
+];
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;

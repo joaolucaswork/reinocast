@@ -1,0 +1,13 @@
+/**
+ * Main CSS entry point for Webflow
+ * This file aggregates all custom styles for the project
+ */
+
+/* Import Swiper core styles */
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+/* Import custom Swiper styles */
+@import './utils/swiper.css';
+

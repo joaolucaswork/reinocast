@@ -4,13 +4,7 @@
  * Optimized for video content (lite-youtube embeds)
  */
 
-// Import Swiper core styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-// Import custom styles
-import './swiper.css';
-
+import { ChevronLeft, ChevronRight, createElement } from 'lucide';
 import Swiper from 'swiper';
 import { A11y, Keyboard, Navigation, Pagination } from 'swiper/modules';
 
@@ -177,8 +171,43 @@ export class SwiperCarousel {
     // Add custom class to indicate Swiper is ready
     this.container?.classList.add('swiper-initialized');
 
+    // Initialize Lucide icons for navigation buttons
+    this.initNavigationIcons();
+
     // Preload first slide's video thumbnail
     this.preloadSlideVideos(0);
+  }
+
+  /**
+   * Initialize Lucide icons for navigation buttons
+   */
+  private initNavigationIcons(): void {
+    if (!this.container || !this.config.navigation) return;
+
+    const prevButton = this.container.querySelector('.swiper-button-prev');
+    const nextButton = this.container.querySelector('.swiper-button-next');
+
+    if (prevButton) {
+      // Clear default content
+      prevButton.innerHTML = '';
+      // Create and append ChevronLeft icon (bem pequeno)
+      const prevIcon = createElement(ChevronLeft);
+      prevIcon.setAttribute('width', '16');
+      prevIcon.setAttribute('height', '16');
+      prevIcon.setAttribute('stroke-width', '2.5');
+      prevButton.appendChild(prevIcon);
+    }
+
+    if (nextButton) {
+      // Clear default content
+      nextButton.innerHTML = '';
+      // Create and append ChevronRight icon (bem pequeno)
+      const nextIcon = createElement(ChevronRight);
+      nextIcon.setAttribute('width', '16');
+      nextIcon.setAttribute('height', '16');
+      nextIcon.setAttribute('stroke-width', '2.5');
+      nextButton.appendChild(nextIcon);
+    }
   }
 
   /**
