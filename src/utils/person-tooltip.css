@@ -1,0 +1,123 @@
+/**
+ * Person Tooltip Custom Styles
+ * Project-specific customizations for Tippy.js tooltips
+ * Core Tippy.js styles are imported from 'tippy.js/dist/tippy.css'
+ */
+
+/* Custom tooltip styling for person names */
+.tippy-box[data-theme~='person'] {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Satoshi Variable', 'Satoshi', Arial, sans-serif;
+  padding: 6px 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* Hide arrow for person theme */
+.tippy-box[data-theme~='person'] .tippy-arrow {
+  display: none;
+}
+
+/* Tooltip content container */
+.person-tooltip-content {
+  text-align: left;
+  line-height: 1.3;
+}
+
+/* Person name styling */
+.person-tooltip-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1px;
+}
+
+/* Company name styling */
+.person-tooltip-company {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.65;
+}
+
+/* Light theme variant for person tooltips */
+.tippy-box[data-theme~='person-light'] {
+  background-color: #fff;
+  color: #26323d;
+  font-family: 'Satoshi Variable', 'Satoshi', Arial, sans-serif;
+  padding: 6px 8px;
+  border-radius: 8px;
+  box-shadow:
+    0 0 20px 4px rgba(154, 161, 177, 0.15),
+    0 4px 80px -8px rgba(36, 40, 47, 0.25),
+    0 4px 4px -2px rgba(91, 94, 105, 0.15);
+}
+
+/* Hide arrow for light theme */
+.tippy-box[data-theme~='person-light'] .tippy-arrow {
+  display: none;
+}
+
+/* Light theme - person name */
+.tippy-box[data-theme~='person-light'] .person-tooltip-name {
+  color: #26323d;
+}
+
+/* Light theme - company name */
+.tippy-box[data-theme~='person-light'] .person-tooltip-company {
+  color: #26323d;
+  opacity: 0.65;
+}
+
+/* Ensure tooltips appear above Swiper and other elements */
+.tippy-box {
+  z-index: 9999;
+}
+
+/* Smooth animations */
+.tippy-box[data-animation='fade'][data-state='hidden'] {
+  opacity: 0;
+}
+
+/* Accessibility - Focus states */
+[data-tippy-root] {
+  max-width: calc(100vw - 10px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tippy-box[data-theme~='person'],
+  .tippy-box[data-theme~='person-light'] {
+    padding: 5px 6px;
+  }
+
+  .person-tooltip-name,
+  .person-tooltip-company {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tippy-box[data-theme~='person'],
+  .tippy-box[data-theme~='person-light'] {
+    padding: 4px 5px;
+  }
+
+  .person-tooltip-name,
+  .person-tooltip-company {
+    font-size: 12px;
+  }
+}
+
+/* Prevent tooltip from interfering with pointer events when hidden */
+.tippy-box[data-state='hidden'] {
+  pointer-events: none;
+}
+
+/* Ensure tooltip content is readable */
+.tippy-content {
+  position: relative;
+  z-index: 1;
+  line-height: 1.4;
+}

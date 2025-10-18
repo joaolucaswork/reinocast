@@ -11,3 +11,8 @@
 /* Import custom Swiper styles */
 @import './utils/swiper.css';
 
+/* Import Tippy.js core styles */
+@import 'tippy.js/dist/tippy.css';
+
+/* Import custom Tippy.js styles */
+@import './utils/person-tooltip.css';
