@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild';
-import { readdirSync } from 'fs';
+import { copyFileSync, readdirSync } from 'fs';
 import { join, sep } from 'path';
 
 // Config output
@@ -12,10 +12,25 @@ const ENTRY_POINTS = [
   'src/styles.css', // CSS separado para usar com <link> no Webflow
 ];
 
+// Files to copy to dist
+const STATIC_FILES = ['transcribe.srt'];
+
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;
 const SERVE_PORT = 3000;
 const SERVE_ORIGIN = `http://localhost:${SERVE_PORT}`;
+
+// Copy static files to dist
+function copyStaticFiles() {
+  STATIC_FILES.forEach((file) => {
+    try {
+      copyFileSync(file, join(BUILD_DIRECTORY, file));
+      console.log(`✓ Copied ${file} to ${BUILD_DIRECTORY}`);
+    } catch (error) {
+      console.warn(`⚠ Could not copy ${file}:`, error.message);
+    }
+  });
+}
 
 // Create context
 const context = await esbuild.context({
@@ -31,6 +46,9 @@ const context = await esbuild.context({
   },
 });
 
+// Copy static files initially (works for both dev and prod)
+copyStaticFiles();
+
 // Build files in prod
 if (PRODUCTION) {
   await context.rebuild();
@@ -40,6 +58,20 @@ if (PRODUCTION) {
 // Watch and serve files in dev
 else {
   await context.watch();
+
+  // Watch static files for changes in dev mode
+  if (!PRODUCTION) {
+    const { watch } = await import('fs');
+    STATIC_FILES.forEach((file) => {
+      watch(file, (eventType) => {
+        if (eventType === 'change') {
+          console.log(`\n📝 ${file} changed, copying to ${BUILD_DIRECTORY}...`);
+          copyStaticFiles();
+        }
+      });
+    });
+  }
+
   await context
     .serve({
       servedir: BUILD_DIRECTORY,

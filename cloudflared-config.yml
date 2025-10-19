@@ -1,0 +1,12 @@
+# Cloudflare Tunnel Configuration
+# Tunnel permanente: reinocast.reinocapital.com.br
+
+tunnel: reinocast
+credentials-file: /Users/lucas/.cloudflared/98d80475-4176-4890-a5e1-474ca69cdca8.json
+
+ingress:
+  # Rota principal - serve a pasta dist em reinocast.reinocapital.com.br
+  - hostname: reinocast.reinocapital.com.br
+    service: http://localhost:3000
+  # Catch-all rule (obrigatório)
+  - service: http_status:404

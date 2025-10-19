@@ -25,6 +25,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development node ./bin/build.js",
     "build": "cross-env NODE_ENV=production node ./bin/build.js",
+    "tunnel": "bash bin/deploy-tunnel.sh",
     "lint": "eslint ./src && prettier --check ./src",
     "lint:fix": "eslint ./src --fix",
     "check": "tsc --noEmit",
@@ -55,6 +56,7 @@
     "@finsweet/ts-utils": "^0.40.0",
     "@justinribeiro/lite-youtube": "^1.8.2",
     "lucide": "^0.546.0",
+    "srt-parser-2": "^1.2.3",
     "swiper": "^12.0.2",
     "tippy.js": "^6.3.7"
   },
