@@ -1,5 +1,5 @@
 import { greetUser } from '$utils/greet';
-import { initLiteYouTube } from '$utils/lite-youtube';
+import { initMuxPlayer } from '$utils/mux-player';
 import { initPersonTooltips } from '$utils/person-tooltip';
 import { initSubtitleSync } from '$utils/subtitle-sync';
 import { initSwiper } from '$utils/swiper';
@@ -9,8 +9,8 @@ window.Webflow.push(() => {
   const name = 'Joao Lucas';
   greetUser(name);
 
-  // Initialize lite-youtube web component
-  initLiteYouTube();
+  // Initialize Mux Player web component
+  initMuxPlayer();
 
   // Initialize Swiper carousels
   // This will automatically find and initialize all .swiper containers

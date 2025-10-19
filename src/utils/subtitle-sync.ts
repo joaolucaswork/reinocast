@@ -15,25 +15,27 @@ interface SubtitleWithSpeaker {
  * Subtitle Synchronization Manager
  * Simple class to manage speaker highlighting based on SRT timestamps
  * Structure and styling are handled by Webflow
+ *
+ * Updated to work with Mux Player instead of Lite YouTube
  */
 export class SubtitleSync {
   private subtitles: SubtitleWithSpeaker[] = [];
   private currentSpeaker: string | null = null;
   private peopleItems: NodeListOf<HTMLElement> | null = null;
-  private liteYoutubeElement: HTMLElement | null = null;
-  private youtubePlayer: YT.Player | null = null;
+  private muxPlayerElement: HTMLElement | null = null;
+  private videoElement: HTMLVideoElement | null = null;
   private syncInterval: number | null = null;
 
   /**
    * Initialize the subtitle synchronization
    * @param srtFilePath - Path to the SRT file
    * @param peopleItemsSelector - CSS selector for speaker elements (default: '.people_item')
-   * @param liteYoutubeSelector - CSS selector for lite-youtube element (default: 'lite-youtube')
+   * @param muxPlayerSelector - CSS selector for mux-player element (default: 'mux-player')
    */
   async init(
     srtFilePath: string,
     peopleItemsSelector: string = '.people_item',
-    liteYoutubeSelector: string = 'lite-youtube'
+    muxPlayerSelector: string = 'mux-player'
   ): Promise<void> {
     try {
       // Load and parse SRT file
@@ -46,15 +48,15 @@ export class SubtitleSync {
         return;
       }
 
-      // Get lite-youtube element
-      this.liteYoutubeElement = document.querySelector(liteYoutubeSelector);
-      if (!this.liteYoutubeElement) {
-        console.warn(`Lite-youtube element not found: ${liteYoutubeSelector}`);
+      // Get mux-player element
+      this.muxPlayerElement = document.querySelector(muxPlayerSelector);
+      if (!this.muxPlayerElement) {
+        console.warn(`Mux Player element not found: ${muxPlayerSelector}`);
         return;
       }
 
-      // Setup YouTube player integration
-      this.setupYouTubeSync();
+      // Setup Mux Player integration
+      this.setupMuxPlayerSync();
 
       console.log('Subtitle synchronization initialized successfully');
       console.log(`Loaded ${this.subtitles.length} subtitles`);
@@ -66,77 +68,64 @@ export class SubtitleSync {
   }
 
   /**
-   * Setup YouTube player synchronization
+   * Setup Mux Player synchronization
    */
-  private setupYouTubeSync(): void {
-    if (!this.liteYoutubeElement) return;
+  private setupMuxPlayerSync(): void {
+    if (!this.muxPlayerElement) return;
 
-    // Listen for when lite-youtube creates the iframe
-    this.liteYoutubeElement.addEventListener('liteYoutubeIframeLoaded', () => {
-      this.initYouTubePlayer();
+    // Access the native video element from Mux Player
+    // Mux Player exposes the underlying HTML5 video element via media.nativeEl
+    const muxPlayer = this.muxPlayerElement as any;
+
+    // Wait for the player to be ready and have the video element available
+    const checkVideoElement = () => {
+      if (muxPlayer.media?.nativeEl) {
+        this.videoElement = muxPlayer.media.nativeEl;
+        this.attachVideoEventListeners();
+      } else {
+        // If not ready yet, wait for loadedmetadata event
+        this.muxPlayerElement?.addEventListener(
+          'loadedmetadata',
+          () => {
+            this.videoElement = muxPlayer.media?.nativeEl;
+            this.attachVideoEventListeners();
+          },
+          { once: true }
+        );
+      }
+    };
+
+    // Check immediately or wait for the element to be ready
+    if (muxPlayer.media) {
+      checkVideoElement();
+    } else {
+      // Wait a bit for the Mux Player to initialize
+      setTimeout(checkVideoElement, 100);
+    }
+  }
+
+  /**
+   * Attach event listeners to the video element
+   */
+  private attachVideoEventListeners(): void {
+    if (!this.videoElement) return;
+
+    // Listen for play event to start synchronization
+    this.videoElement.addEventListener('play', () => {
+      this.startSync();
     });
 
-    // Check if iframe already exists
-    const iframe = this.liteYoutubeElement.shadowRoot?.querySelector('iframe');
-    if (iframe) {
-      this.initYouTubePlayer();
-    }
-  }
-
-  /**
-   * Initialize YouTube IFrame API and player
-   */
-  private initYouTubePlayer(): void {
-    // Load YouTube IFrame API if not already loaded
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-
-      // Wait for API to load
-      window.onYouTubeIframeAPIReady = () => {
-        this.connectToYouTubePlayer();
-      };
-    } else {
-      this.connectToYouTubePlayer();
-    }
-  }
-
-  /**
-   * Connect to the YouTube player iframe
-   */
-  private connectToYouTubePlayer(): void {
-    const iframe = this.liteYoutubeElement?.shadowRoot?.querySelector('iframe');
-    if (!iframe || !iframe.id) {
-      // Set an ID if it doesn't have one
-      if (iframe) {
-        iframe.id = 'youtube-player-' + Math.random().toString(36).substr(2, 9);
-      }
-    }
-
-    if (iframe?.id && window.YT) {
-      this.youtubePlayer = new window.YT.Player(iframe.id, {
-        events: {
-          onStateChange: this.onPlayerStateChange.bind(this),
-        },
-      });
-    }
-  }
-
-  /**
-   * Handle YouTube player state changes
-   */
-  private onPlayerStateChange(event: YT.OnStateChangeEvent): void {
-    // YT.PlayerState.PLAYING = 1
-    // YT.PlayerState.PAUSED = 2
-    if (event.data === 1) {
-      // Playing - start sync
-      this.startSync();
-    } else {
-      // Paused or ended - stop sync
+    // Listen for pause event to stop synchronization
+    this.videoElement.addEventListener('pause', () => {
       this.stopSync();
-    }
+    });
+
+    // Listen for ended event to stop synchronization
+    this.videoElement.addEventListener('ended', () => {
+      this.stopSync();
+    });
+
+    console.log('✓ Video event listeners attached');
   }
 
   /**
@@ -147,8 +136,8 @@ export class SubtitleSync {
 
     // Update every 100ms for smooth transitions
     this.syncInterval = window.setInterval(() => {
-      if (this.youtubePlayer && typeof this.youtubePlayer.getCurrentTime === 'function') {
-        const currentTime = this.youtubePlayer.getCurrentTime();
+      if (this.videoElement) {
+        const { currentTime } = this.videoElement;
         this.updateSpeakerAtTime(currentTime);
       }
     }, 100);
@@ -287,7 +276,7 @@ export class SubtitleSync {
   public destroy(): void {
     this.stopSync();
     this.clearActiveSpeaker();
-    this.youtubePlayer = null;
+    this.videoElement = null;
   }
 }
 
@@ -295,57 +284,15 @@ export class SubtitleSync {
  * Initialize subtitle synchronization
  * @param srtFilePath - Path to the SRT file (default: '/transcribe.srt')
  * @param peopleItemsSelector - CSS selector for speaker elements (default: '.people_item')
- * @param liteYoutubeSelector - CSS selector for lite-youtube element (default: 'lite-youtube')
+ * @param muxPlayerSelector - CSS selector for mux-player element (default: 'mux-player')
  * @returns SubtitleSync instance
  */
 export async function initSubtitleSync(
   srtFilePath: string = '/transcribe.srt',
   peopleItemsSelector: string = '.people_item',
-  liteYoutubeSelector: string = 'lite-youtube'
+  muxPlayerSelector: string = 'mux-player'
 ): Promise<SubtitleSync> {
   const sync = new SubtitleSync();
-  await sync.init(srtFilePath, peopleItemsSelector, liteYoutubeSelector);
+  await sync.init(srtFilePath, peopleItemsSelector, muxPlayerSelector);
   return sync;
-}
-
-// Type declarations for YouTube IFrame API
-declare global {
-  interface Window {
-    YT: typeof YT;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
-namespace YT {
-  export class Player {
-    constructor(elementId: string, options: PlayerOptions);
-    getCurrentTime(): number;
-    playVideo(): void;
-    pauseVideo(): void;
-    destroy(): void;
-  }
-
-  export interface PlayerOptions {
-    events?: {
-      onReady?: (event: PlayerEvent) => void;
-      onStateChange?: (event: OnStateChangeEvent) => void;
-    };
-  }
-
-  export interface PlayerEvent {
-    target: Player;
-  }
-
-  export interface OnStateChangeEvent extends PlayerEvent {
-    data: number;
-  }
-
-  export enum PlayerState {
-    UNSTARTED = -1,
-    ENDED = 0,
-    PLAYING = 1,
-    PAUSED = 2,
-    BUFFERING = 3,
-    CUED = 5,
-  }
 }

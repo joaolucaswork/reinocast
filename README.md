@@ -4,22 +4,42 @@ A starter template for both Client & Power projects.
 
 Before starting to work with this template, please take some time to read through the documentation.
 
-## 🎥 Lite-YouTube Integration
+## 🎥 Mux Player Integration
 
-This project includes a fully integrated lite-youtube web component for fast, performant YouTube embeds in Webflow.
+This project includes a fully integrated Mux Player web component for professional video playback in Webflow.
 
-**Quick Links:**
+**What is Mux?**
 
-- [📖 Full Webflow Integration Guide](./docs/LITE-YOUTUBE-WEBFLOW-GUIDE.md)
-- [⚡ Quick Reference Card](./docs/QUICK-REFERENCE.md)
-- [🎨 Live Examples](./docs/lite-youtube-example.html)
+Mux is a comprehensive video platform for developers, offering video hosting, encoding, streaming, analytics, and monitoring. The Mux Player provides a drop-in component for seamless video playback with advanced features.
 
 **Quick Start:**
 
 ```html
 <!-- Add to Webflow Embed Element -->
-<lite-youtube videoid="YOUR_VIDEO_ID"></lite-youtube>
+<mux-player
+  playback-id="YOUR_PLAYBACK_ID"
+  metadata-video-title="Your Video Title"
+  metadata-viewer-user-id="user-id-007"
+></mux-player>
 ```
+
+**Key Features:**
+
+- 🚀 Fast, performant video playback
+- 📊 Built-in analytics and monitoring
+- 🎨 Customizable player UI
+- 📱 Responsive and mobile-friendly
+- 🔒 Secure playback with signed URLs
+- 🌐 HLS/DASH streaming support
+
+**Documentation:**
+
+- [⚡ Quick Start (5 minutos)](./docs/QUICK-START-MUX.md) - **Comece aqui!**
+- [📖 Guia Completo de Integração Webflow](./docs/MUX-PLAYER-WEBFLOW-GUIDE.md)
+- [🚀 Guia de Migração (YouTube → Mux)](./docs/MIGRATION-GUIDE.md)
+- [💡 Exemplos para Webflow](./docs/WEBFLOW-EXAMPLE.md)
+- [Mux Player Documentation](https://www.mux.com/docs/guides/mux-player-web)
+- [Mux Dashboard](https://dashboard.mux.com/)
 
 The lite-youtube component loads ~224x faster than standard YouTube embeds, improving Core Web Vitals and page performance.
 
