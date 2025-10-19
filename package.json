@@ -26,6 +26,7 @@
     "dev": "cross-env NODE_ENV=development node ./bin/build.js",
     "build": "cross-env NODE_ENV=production node ./bin/build.js",
     "tunnel": "bash bin/deploy-tunnel.sh",
+    "dev:tunnel": "bash bin/dev-tunnel.sh",
     "lint": "eslint ./src && prettier --check ./src",
     "lint:fix": "eslint ./src --fix",
     "check": "tsc --noEmit",

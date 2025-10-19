@@ -13,7 +13,7 @@ const ENTRY_POINTS = [
 ];
 
 // Files to copy to dist
-const STATIC_FILES = ['transcribe.srt'];
+const STATIC_FILES = ['transcribe.srt', 'src/loader.js'];
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;
@@ -24,8 +24,10 @@ const SERVE_ORIGIN = `http://localhost:${SERVE_PORT}`;
 function copyStaticFiles() {
   STATIC_FILES.forEach((file) => {
     try {
-      copyFileSync(file, join(BUILD_DIRECTORY, file));
-      console.log(`✓ Copied ${file} to ${BUILD_DIRECTORY}`);
+      // Get just the filename for destination (remove src/ prefix if present)
+      const destFile = file.replace(/^src\//, '');
+      copyFileSync(file, join(BUILD_DIRECTORY, destFile));
+      console.log(`✓ Copied ${file} to ${BUILD_DIRECTORY}/${destFile}`);
     } catch (error) {
       console.warn(`⚠ Could not copy ${file}:`, error.message);
     }

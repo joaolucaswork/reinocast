@@ -6,7 +6,7 @@ import { initSwiper } from '$utils/swiper';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  const name = 'John Doe';
+  const name = 'Joao Lucas';
   greetUser(name);
 
   // Initialize lite-youtube web component
@@ -21,8 +21,8 @@ window.Webflow.push(() => {
   initPersonTooltips();
 
   // Initialize subtitle synchronization
-  // This will load the SRT file and prepare speaker highlighting
-  initSubtitleSync('/transcribe.srt').then((sync) => {
+  // SRT file is served from Cloudflare Tunnel
+  initSubtitleSync('https://reinocast.reinocapital.com.br/transcribe.srt').then((sync) => {
     // Expose sync instance globally so you can call updateSpeakerAtTime() from your player
     window.subtitleSync = sync;
   });

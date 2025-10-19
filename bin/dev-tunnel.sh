@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Deploy script for Cloudflare Tunnel with Hot Reload
-# This script builds the project, watches for changes, and creates a tunnel to serve it
+# Development script with auto-rebuild and tunnel
+# This script runs build in production mode with watch, then starts the tunnel
 
 set -e
 
-echo "🚀 Starting deployment process with hot reload..."
+echo "🚀 Starting development with Cloudflare Tunnel..."
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -13,36 +13,23 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Step 1: Initial build
+# Step 1: Build production (initial build)
 echo -e "\n${BLUE}📦 Building production bundle...${NC}"
 pnpm build
 
-# Step 1.5: Start file watcher in background
-echo -e "\n${BLUE}👀 Starting file watcher for hot reload...${NC}"
-pnpm dev > /dev/null 2>&1 &
-WATCHER_PID=$!
-echo -e "${GREEN}✓ File watcher started (PID: $WATCHER_PID)${NC}"
-
-# Step 2: Check if serve is installed
-if ! command -v serve &> /dev/null; then
-    echo -e "${YELLOW}⚠️  'serve' not found. Installing globally...${NC}"
-    npm install -g serve
-fi
-
-# Step 3: Check if cloudflared is installed
+# Step 2: Check if cloudflared is installed
 if ! command -v cloudflared &> /dev/null; then
     echo -e "${YELLOW}⚠️  'cloudflared' not found.${NC}"
     echo -e "${YELLOW}Please install it first:${NC}"
     echo -e "${YELLOW}  macOS: brew install cloudflare/cloudflare/cloudflared${NC}"
-    echo -e "${YELLOW}  Or visit: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/${NC}"
     exit 1
 fi
 
-# Step 4: Kill any existing serve process on port 3000
+# Step 3: Kill any existing serve process on port 3000
 echo -e "\n${BLUE}🧹 Cleaning up existing processes...${NC}"
 lsof -ti:3000 | xargs kill -9 2>/dev/null || true
 
-# Step 5: Start serve in background with CORS enabled
+# Step 4: Start serve in background with CORS enabled
 echo -e "\n${BLUE}🌐 Starting local server on port 3000...${NC}"
 serve dist -p 3000 --cors > /dev/null 2>&1 &
 SERVE_PID=$!
@@ -51,16 +38,30 @@ echo -e "${GREEN}✓ Server started (PID: $SERVE_PID)${NC}"
 # Wait a bit for serve to start
 sleep 2
 
+# Step 5: Start file watcher in background
+echo -e "\n${BLUE}👀 Starting file watcher...${NC}"
+{
+    # Watch for changes in src/ and transcribe.srt
+    fswatch -o src/ transcribe.srt | while read -r event; do
+        echo -e "\n${YELLOW}📝 Files changed, rebuilding...${NC}"
+        pnpm build
+        echo -e "${GREEN}✓ Rebuild complete${NC}"
+    done
+} &
+WATCHER_PID=$!
+echo -e "${GREEN}✓ File watcher started (PID: $WATCHER_PID)${NC}"
+
 # Step 6: Start cloudflared tunnel
 echo -e "\n${BLUE}☁️  Starting Cloudflare Tunnel...${NC}"
 echo -e "${GREEN}✓ Tunnel URL: https://reinocast.reinocapital.com.br${NC}"
-echo -e "${YELLOW}Press Ctrl+C to stop the tunnel${NC}\n"
+echo -e "${YELLOW}Press Ctrl+C to stop everything${NC}\n"
 
 # Trap to cleanup on exit
 cleanup() {
     echo -e "\n\n${BLUE}🧹 Cleaning up...${NC}"
     kill $SERVE_PID 2>/dev/null || true
-    echo -e "${GREEN}✓ Deployment stopped${NC}"
+    kill $WATCHER_PID 2>/dev/null || true
+    echo -e "${GREEN}✓ All processes stopped${NC}"
     exit 0
 }
 trap cleanup INT TERM
