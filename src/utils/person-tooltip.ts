@@ -32,10 +32,11 @@ export const initPersonTooltips = (): Instance[] => {
     // Initialize Tippy.js on each element
     elementsWithPerson.forEach((element) => {
       const personName = element.getAttribute('person');
+      const description = element.getAttribute('description');
 
       if (personName) {
         try {
-          // Create tooltip content with name and "Reino Capital" below
+          // Create tooltip content with name and description below
           const tooltipContent = document.createElement('div');
           tooltipContent.className = 'person-tooltip-content';
 
@@ -45,7 +46,7 @@ export const initPersonTooltips = (): Instance[] => {
 
           const companyElement = document.createElement('div');
           companyElement.className = 'person-tooltip-company';
-          companyElement.textContent = 'Reino Capital - Participante';
+          companyElement.textContent = description || 'Reino Capital - Participante';
 
           tooltipContent.appendChild(nameElement);
           tooltipContent.appendChild(companyElement);
